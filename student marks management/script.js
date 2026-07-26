@@ -3,15 +3,17 @@ let english = document.getElementById('english')
 let hindi = document.getElementById('hindi')
 let math = document.getElementById('math')
 let science = document.getElementById('science')
-
 let show = document.getElementById('show')
 
-students = []
-inputs = [studentName, english, hindi, math, science]
-
+let students = JSON.parse(localStorage.getItem('studentsList')) || []
+let inputs = [studentName, english, hindi, math, science]
 
 function addStudent() {
-    info = {
+    if (!studentName.value || !english.value || !hindi.value || !math.value || !science.value) {
+        return alert("Please fill out all fields before adding a student.")
+    }
+
+    let info = {
         name: studentName.value,
         english: english.value,
         hindi: hindi.value,
@@ -20,19 +22,19 @@ function addStudent() {
     }
 
     students.push(info)
+    localStorage.setItem('studentsList', JSON.stringify(students))
 
     inputs.forEach(element => {
-        element.value = null
+        element.value = ""
     });
 
     showStudents()
 }
 
 function showStudents() {
-    show.innerHTML = null
+    show.innerHTML = ""
     for (let i = 0; i < students.length; i++) {
         const student = students[i];
-
         let div = document.createElement('div')
 
         let nameh3 = document.createElement('h3')
@@ -51,128 +53,111 @@ function showStudents() {
         scienceMarks.innerText = student.science
 
         let totalMarks = document.createElement('h3')
-        totalMarks.innerText = parseInt(student.english) + parseInt(student.hindi) + parseInt(student.math) + parseInt(student.science);
+        totalMarks.innerText = parseInt(student.english || 0) + parseInt(student.hindi || 0) + parseInt(student.math || 0) + parseInt(student.science || 0);
 
         let grade = document.createElement('h3')
         grade.innerText = showGrade(totalMarks.innerText)
 
         let btnDiv = document.createElement('div')
+        btnDiv.classList.add('btn-group')
 
         let editBtn = document.createElement('button')
-        editBtn.innerText = 'edit'
-        editBtn.onclick = () => {
-            editStudent(i)
-        }
-
+        editBtn.innerText = 'Edit'
+        editBtn.onclick = () => editStudent(i)
 
         let delBtn = document.createElement('button')
-        delBtn.innerText = 'delete'
-        delBtn.onclick = () => {
-            delStudent(i)
-        }
+        delBtn.innerText = 'Delete'
+        delBtn.classList.add('delete') // Attaches red styling hook
+        delBtn.onclick = () => delStudent(i)
 
         btnDiv.append(editBtn, delBtn)
-
-        btnDiv.classList.add('button-div')
         div.classList.add('students')
 
         div.append(nameh3, englishMarks, hindiMarks, mathMarks, scienceMarks, totalMarks, grade, btnDiv)
         show.appendChild(div)
-
     }
 }
 
 function editStudent(index) {
     let dialog = document.createElement('dialog')
-    let dialogDiv = document.createElement('div')
-    dialogDiv.classList.add('dialog')
+    dialog.classList.add('dialog')
 
-    dialogDiv.innerHTML = `
+    dialog.innerHTML = `
+        <h2>Edit Student Record</h2>
         <div class="editFields">
-            <p>Edit Name</p>
+            <label>Edit Name</label>
             <input placeholder="edit name" id="editName"> 
         </div>
         <div class="editFields">
-            <p>Edit English Marks</p> 
-            <input placeholder="edit english marks" id="editEnglish"> 
+            <label>Edit English Marks</label> 
+            <input type="number" placeholder="edit english marks" id="editEnglish"> 
         </div>
         <div class="editFields">
-            <p>Edit Hindi Marks</p> 
-            <input placeholder="edit hindi marks" id="editHindi"> 
+            <label>Edit Hindi Marks</label> 
+            <input type="number" placeholder="edit hindi marks" id="editHindi"> 
         </div>
         <div class="editFields">
-            <p>Edit Math Marks</p> 
-            <input placeholder="edit math marks" id="editMath"> 
+            <label>Edit Math Marks</label> 
+            <input type="number" placeholder="edit math marks" id="editMath"> 
         </div>
         <div class="editFields">
-            <p>Edit Science</p> 
-            <input placeholder="edit science marks" id="editScience"> 
+            <label>Edit Science</label> 
+            <input type="number" placeholder="edit science marks" id="editScience"> 
         </div>
-        <button onclick="this.closest('dialog').close()">Update</button>
+        <div class="dialog-actions">
+            <button class="save-btn" onclick="this.closest('dialog').close('save')">Update</button>
+            <button class="cancel-btn" onclick="this.closest('dialog').close('cancel')">Cancel</button>
+        </div>
     `
 
-    let editName = dialogDiv.querySelector('#editName')
+    let editName = dialog.querySelector('#editName')
+    let editEnglish = dialog.querySelector('#editEnglish')
+    let editHindi = dialog.querySelector('#editHindi')
+    let editMath = dialog.querySelector('#editMath')
+    let editScience = dialog.querySelector('#editScience')
+
     editName.value = students[index].name
-
-    let editEnglish = dialogDiv.querySelector('#editEnglish')
     editEnglish.value = students[index].english
-
-    let editHindi = dialogDiv.querySelector('#editHindi')
     editHindi.value = students[index].hindi
-
-    let editMath = dialogDiv.querySelector('#editMath')
     editMath.value = students[index].math
-
-    let editScience = dialogDiv.querySelector('#editScience')
     editScience.value = students[index].science
 
-    dialog.appendChild(dialogDiv)
     document.body.appendChild(dialog)
-
     dialog.showModal()
+
     dialog.onclose = () => {
-        let std = students[index]
-        std.name = editName.value
-        std.english = editEnglish.value
-        std.hindi = editHindi.value
-        std.math = editMath.value
-        std.science = editScience.value
-        showStudents()
+        if (dialog.returnValue === 'save') {
+            let std = students[index]
+            std.name = editName.value
+            std.english = editEnglish.value
+            std.hindi = editHindi.value
+            std.math = editMath.value
+            std.science = editScience.value
+
+            localStorage.setItem('studentsList', JSON.stringify(students))
+            showStudents()
+        }
+        dialog.remove() 
     }
-
-
 }
 
 function delStudent(index) {
-    students.splice(index, 1)
-    showStudents()
+    if (confirm("Are you sure you want to delete this record?")) {
+        students.splice(index, 1)
+        localStorage.setItem('studentsList', JSON.stringify(students))
+        showStudents()
+    }
 }
 
 function showGrade(totalMarks) {
-    let pct = totalMarks / 400 * 100
-    let grade = ''
-
-    if (pct >= 90) {
-        grade = 'A+'
-    }
-    else if (pct < 90 && pct >= 80) {
-        grade = 'A'
-    }
-    else if (pct < 80 && pct >= 70) {
-        grade = 'A-'
-    }
-    else if (pct < 70 && pct >= 60) {
-        grade = 'B'
-    }
-    else if (pct < 60 && pct >= 50) {
-        grade = 'C'
-    }
-    else if (pct < 50 && pct >= 40) {
-        grade = 'D'
-    }
-    else {
-        grade = 'F'
-    }
-
-    return (grade)
+    let pct = (totalMarks / 400) * 100
+    if (pct >= 90) return 'A+'
+    if (pct >= 80) return 'A'
+    if (pct >= 70) return 'A-'
+    if (pct >= 60) return 'B'
+    if (pct >= 50) return 'C'
+    if (pct >= 40) return 'D'
+    return 'F'
 }
+
+showStudents()

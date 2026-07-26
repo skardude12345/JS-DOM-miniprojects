@@ -1,84 +1,233 @@
 * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    margin: 20px;
+    margin: 30px auto;
+    max-width: 1200px;
+    padding: 0 20px;
+    background-color: #f8f9fc;
+    color: #333;
+}
+
+h1 {
+    font-size: 2.2rem;
+    color: rgb(47, 83, 214);
+    font-weight: 700;
+    margin-bottom: 25px;
 }
 
 .inputs {
     background-color: rgb(47, 83, 214);
-    padding: 10px;
-    text-align: center;
-    border-radius: 15px;
+    padding: 16px 20px;
+    border-radius: 12px;
     display: flex;
-    gap: 20px;
+    gap: 12px;
     align-items: center;
+    box-shadow: 0 4px 20px rgba(47, 83, 214, 0.15);
 }
 
 .inputs input {
-    border-radius: 5px;
-    border: none;
-    height: 40px;
-    width: 100%;
-    padding-left: 6px;
-    font-size: 12px;
+    flex: 1;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    height: 42px;
+    padding: 0 12px;
+    font-size: 13px;
+    background-color: rgba(255, 255, 255, 0.95);
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.inputs input:focus {
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
 .inputs button {
-    width: 500px;
-    height: 50px;
+    padding: 0 24px;
+    height: 42px;
     background-color: white;
+    color: rgb(47, 83, 214);
+    font-weight: 600;
+    font-size: 14px;
     border: none;
-    border-radius: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.students {
+.inputs button:hover {
+    background-color: #f0f3ff;
+    transform: translateY(-1px);
+}
+
+.categories, .students {
     display: flex;
-    background-color: rgb(248, 248, 248);
     align-items: center;
-    border-top: 1px solid rgb(213, 213, 213);
+    padding: 0 20px;
 }
 
-.students h3 {
-    width: 11%;
+.categories h2, .students h3 {
+    flex: 1;
+    min-width: 80px;
     text-align: center;
-    min-width: 85px;
+    padding: 15px 5px;
+    word-break: break-word;
 }
 
-.students button {
-    width: 100px;
-    height: 30px;
-    background-color:  rgb(47, 83, 214);
-    border-radius: 10px;
-    color: white;
-    border: none;
-    margin-right: 5px
+.categories .btn-spacer, .students .btn-group {
+    width: 160px;
+    min-width: 160px;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
 }
-
-
 
 .categories {
-    display: flex;
     background-color: rgb(235, 235, 235);
-    border-start-start-radius: 20px;
-    border-start-end-radius: 20px;
-    margin-top: 20px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    margin-top: 35px;
+    border-bottom: 2px solid rgb(215, 215, 215);
 }
 
 .categories h2 {
-    width: 11%;
-    text-align: center;
-    min-width: 85px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.dialog {
-    display: flex;
-    gap: 20px;
-    border:none;
+.students {
+    background-color: white;
+    border-bottom: 1px solid rgb(230, 230, 230);
+    transition: background-color 0.15s ease;
+}
+
+.students:hover {
+    background-color: rgb(250, 252, 255);
+}
+
+.students:last-of-type {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.02);
+}
+
+.students h3 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #495057;
+}
+
+.students h3:first-of-type {
+    font-weight: 600;
+    color: #212529;
+}
+
+.students button {
+    padding: 6px 14px;
+    height: 32px;
+    background-color: rgb(47, 83, 214);
+    border-radius: 6px;
+    color: white;
+    font-weight: 500;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.students button:hover {
+    background-color: rgb(35, 67, 184);
+}
+
+.students button.delete {
+    background-color: #f75a68;
+}
+
+.students button.delete:hover {
+    background-color: #e54856;
+}
+
+dialog.dialog {
+    margin: auto;
+    padding: 24px;
+    border: none;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    width: 90%;
+    max-width: 420px;
     outline: none;
 }
 
-.dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.273);
+dialog.dialog h2 {
+    font-size: 1.25rem;
+    color: #212529;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.editFields {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.editFields label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.editFields input {
+    height: 38px;
+    padding: 0 10px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    font-size: 14px;
+    outline: none;
+}
+
+.editFields input:focus {
+    border-color: rgb(47, 83, 214);
+}
+
+.dialog-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-end;
+}
+
+.dialog-actions button {
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.dialog-actions .save-btn {
+    background-color: rgb(47, 83, 214);
+    color: white;
+}
+
+.dialog-actions .cancel-btn {
+    background-color: #e2e8f0;
+    color: #4a5568;
+}
+
+dialog.dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
 }

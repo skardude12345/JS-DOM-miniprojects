@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Marks Management</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <h1>Student Marks Management</h1>
+    
     <div class="inputs">
         <input placeholder="enter name" id="name">
         <input placeholder="enter english marks" id="english" type="number">
         <input placeholder="enter hindi marks" id="hindi" type="number">
         <input placeholder="enter math marks" id="math" type="number">
         <input placeholder="enter science marks" id="science" type="number">
-        <button id="add" onclick="addStudent()">add</button>
+        <button id="add" onclick="addStudent()">Add</button>
     </div>
 
     <div class="categories">
@@ -28,35 +26,11 @@
         <h2>Science</h2>
         <h2>Total</h2>
         <h2>Grade</h2>
+        <div class="btn-spacer"></div>
     </div>
-    <!-- 
-        <div class="editFields">
-            <p>Edit Name</p>
-            <input placeholder="edit name" id="editName"> 
-        </div>
-        <div class="editFields">
-            <p>Edit English Marks</p>
-             <input placeholder="edit english marks" id="editEnglish"> 
-        </div>
-        <div class="editFields">
-            <p>Edit Hindi Marks</p>
-             <input placeholder="edit hindi marks" id="editHindi"> 
-        </div>
-        <div class="editFields">
-            <p>Edit Math Marks</p>
-             <input placeholder="edit math marks" id="editMath"> 
-        </div>
-        <div class="editFields">
-            <p>Edit Science</p>
-             <input placeholder="edit science marks" id="editScience"> 
-        </div> -->
 
-    <div id="show">
-
-    </div>
+    <div id="show"></div>
 
     <script src="script.js"></script>
 </body>
-
-
 </html>
